@@ -14,7 +14,7 @@ sub load_troll {
 %PLUGIN_INFO = (
     perl_api_version => 2,
     name => "Troll",
-    version => "1.0",
+    version => "1.1",
     summary => "Speak like a troll and impress your friends!",
     description => "Speak like a troll.",
     author => "dlom234\@gmail.com",
@@ -191,6 +191,13 @@ sub none {
     none => \&none
 );
 
+sub ucarray {
+    my (@arr) = @_;
+    foreach my $index (0..$#arr) {
+        @arr[$index] = ucfirst(@arr[$index]);
+    }
+    return @arr;
+}
 sub plugin_init {
     return %PLUGIN_INFO;
 }
@@ -206,6 +213,8 @@ sub on_troll_command {
         save_troll();
         troll_log("Troll set to: $PREFS{current_troll}");
         troll_display($conv, "Troll set to: " . ucfirst($PREFS{current_troll}));
+    } elsif ($arg eq "list") {
+        troll_display($conv, "Trolls: " . join(", ", ucarray(keys(%trolls))));
     } else {
         troll_log("$arg is not a valid troll!");
         troll_display($conv, "$arg is not a valid troll!");
