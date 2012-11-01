@@ -1,4 +1,5 @@
 use Purple;
+use Pidgin;
 
 %PREFS = (
     current_troll_default => "none",
@@ -14,7 +15,7 @@ sub load_troll {
 %PLUGIN_INFO = (
     perl_api_version => 2,
     name => "Troll",
-    version => "1.1",
+    version => "1.2",
     summary => "Speak like a troll and impress your friends!",
     description => "Speak like a troll.",
     author => "dlom234\@gmail.com",
@@ -223,8 +224,17 @@ sub on_troll_command {
 }
 sub sending_message {
     my ($account, $id, $message) = @_;
+    #$message = troll_speak(Purple::Util::Markup::strip_html($message));
     $message = troll_speak($message);
-    @_[2] = $message;
+    $_[2] = $message;
+}
+sub displaying_message {
+    my ($account, $who, $message, $conv, $flags) = @_;
+    if ($flags & Purple::Conversation::Flags::SEND) {
+        #$message = troll_speak(Purple::Util::Markup::strip_html($message));
+        $message = troll_speak($message);
+    }
+    $_[2] = $message;
 }
 sub prefs_info {
     my $frame = Purple::PluginPref::Frame->new();
@@ -250,11 +260,13 @@ sub plugin_load {
     my $plugin = shift;
     Purple::Prefs::add_none("/plugins/core/troll");
     Purple::Prefs::add_string("/plugins/core/troll/current_troll", $PREFS{current_troll_default});
-    load_troll();    
+    load_troll(); 
     troll_log("Current troll set to: $PREFS{current_troll}");
     my $conversations_handle = Purple::Conversations::get_handle();
+    my $pidgin_handle = Pidgin::Conversations::get_handle();
     my $help = "/troll name|none";
     Purple::Signal::connect($conversations_handle, "sending-im-msg", $plugin, \&sending_message);
+    Purple::Signal::connect($pidgin_handle, "displaying-im-msg", $plugin, \&displaying_message);
     my $command_id = Purple::Cmd::register($plugin, "troll", "s", Purple::Cmd::Priority::DEFAULT, Purple::Cmd::Flag::IM | Purple::Cmd::Flag::ALLOW_WRONG_ARGS, "prpl-trolls", \&on_troll_command, "$help", $plugin);
     troll_log("Trolls loaded :D");
 }
