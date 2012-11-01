@@ -6,7 +6,7 @@ https://raw.github.com/Dlom/troll.pl/master/troll.pl
 
 ## Install
 * Install `perl`
-    * Windows: http://strawberryperl.com/ Make sure it is `perl` version 5.***10***.x ***32***bit
+    * Windows: http://strawberryperl.com/ Make sure it is `perl` version 5. ***10*** .x ***32*** bit
     * Linux/OSX: If it's not already installed, back slowly away and wonder what you screwed up
 * Install Pidgin
     * http://pidgin.im
@@ -15,7 +15,7 @@ https://raw.github.com/Dlom/troll.pl/master/troll.pl
     * Open Pidgin, Help->Build Information
     * Find Perl Enabled|Disabled
     * If `perl` is disabled, reinstall Pidgin
-    * If it's still disabled, make sure you have `perl` version 5.***10***.x and that it is ***32***bit
+    * If it's still disabled, make sure you have `perl` version 5. ***10*** .x and that it is ***32*** bit
 * Drop `troll.pl` in `.purple/plugins`
     * You may need to make the `plugins` folder
     * Windows: Open %APPDATA% and find `.purple`
